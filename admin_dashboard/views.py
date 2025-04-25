@@ -13,11 +13,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.utils.timezone import now
 
-
-
 def admin_check(user):
     return user.is_superuser
-
 
 @user_passes_test(admin_check)
 def report_dashboard(request):
@@ -103,7 +100,6 @@ def add_user(request):
         confirm_password = request.POST.get('confirm_password')
         is_staff = request.POST.get('is_staff') == 'on'
 
-        # Validate the passwords match
         if password != confirm_password:
             return render(request, 'admin_dashboard/add_user.html', {
                 'error': "Passwords do not match."
@@ -132,7 +128,6 @@ def add_user(request):
     return render(request, 'admin_dashboard/add_user.html')
 
 
-@login_required
 @user_passes_test(admin_check)
 def add_bakery_item(request):
     if request.method == 'POST':

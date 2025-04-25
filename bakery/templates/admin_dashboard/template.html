@@ -13,11 +13,7 @@
         <h2>Administrator Tools</h2>
         <hr class="horizontal">
         <ul>
-            <li class="nav-item">
-                {% if user.is_superuser %}
-                <a href="{% url 'admin_dashboard:add_bakery_item' %}" class="nav-link">Add Bakery Item</a>
-                {% endif %}
-            </li>
+            <li class="nav-item"><a href="{% url 'admin_dashboard:add_bakery_item' %}" class="nav-link">Add Bakery Item</a></li>
             <li class="nav-item"><a href="{% url 'admin_dashboard:add_users' %}" class="nav-link">Add Users</a></li>
             <li class="nav-item"><a href="{% url 'admin_dashboard:manage_users' %}" class="nav-link">Manage Users</a></li>
             <li class="nav-item"><a href="{% url 'admin_dashboard:report_dashboard' %}" class="nav-link">Generate Reports</a></li>

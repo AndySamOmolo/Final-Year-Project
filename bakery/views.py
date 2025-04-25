@@ -13,9 +13,8 @@ from django.conf import settings
 def send_confirmation_email(email):
     send_mail(
         'Subscription Confirmation',
-        'Thank you for subscribing to our newsletter!',
-        'your-email@gmail.com',  # From email
-        [email],  # To email
+        'Thank you for subscribing to our newsletter!',  
+        [email],  
         fail_silently=False,
     )
 
@@ -24,17 +23,16 @@ def home(request):
         form = NewsletterSubscriptionForm(request.POST)
         if form.is_valid():
             subscription = form.save()
-            send_confirmation_email(subscription.email)  # Send confirmation email
+            send_confirmation_email(subscription.email)  
             messages.success(request, "Thank you for subscribing to our newsletter!")
             return redirect('home')
         else:
-            # Print the form errors to debug
-            print(form.errors)  # This will show the exact validation errors
+            print(form.errors)  
             messages.error(request, "Invalid email address. Please try again.")
     else:
         form = NewsletterSubscriptionForm()
 
-    bestsellers = BakeryItem.objects.filter(available=True).order_by('-sales')[:3]
+    bestsellers = BakeryItem.objects.filter(available=True).order_by('-sales')[:9]
 
     context = {
         'form': form,
@@ -99,8 +97,6 @@ def contact(request):
 
     return render(request, 'bakery/contact.html', {'form': form})
 
-def contact(request):
-    return render(request, 'bakery/contact.html')
 
 def account(request):
     return render(request, 'bakery/account.html')
