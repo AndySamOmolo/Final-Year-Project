@@ -1,20 +1,38 @@
 {% extends 'user_dashboard/template.html' %}
 
 {% block dashboard_content %}
-<h2>Your Orders' Delivery Status</h2>
+    <h2>Your Delivery Status</h2>
 
-{% if order_progress %}
-    <ul>
-    {% for order_info in order_progress %}
-        <li>
-            <strong>Order ID: {{ order_info.order.id }}</strong><br>
-            <p>Delivery Progress: {{ order_info.progress_percentage }}%</p>
-            <p>Estimated Delivery: {{ order_info.order.estimated_delivery_time }}</p>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>You have no orders yet.</p>
-{% endif %}
-
+    {% if orders %}
+        <table class="generic-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Status</th>
+                    <th>Estimated Delivery</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>
+                            <span class="status-{{ order.status|lower }}">{{ order.status }}</span>
+                        </td>
+                        <td>{{ order.estimated_delivery_time }}</td>
+                        <td>
+                            <a href="{% url 'user_dashboard:order_details' order.id %}" class="btn1">View Details</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">You have no orders yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no orders to display.</p>
+    {% endif %}
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block dashboard_content %}
 <h2>Manage Bakery Items</h2>
-<table class="item-table">
+<table class="generic-table">
     <thead>
         <tr>
             <th>ID</th>
@@ -20,7 +20,7 @@
             <td>{{ item.price }}</td>
             <td>{{ item.available }}</td>
             <td>
-                <a href="{% url 'staff_dashboard:edit_item' item.id %}" class="btn-action">Edit</a>
+                <a href="{% url 'staff_dashboard:edit_item' item.id %}" class="btn1">Edit</a>
             </td>
         </tr>
         {% endfor %}

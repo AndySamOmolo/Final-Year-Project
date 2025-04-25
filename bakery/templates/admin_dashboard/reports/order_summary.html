@@ -1,0 +1,60 @@
+<style>   
+.generic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+
+.generic-table th,
+.generic-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.generic-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.generic-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.generic-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+</style>
+
+<h2>Order Summary Report</h2>
+
+<p>Total Orders: {{ total_orders }}</p>
+<p>Pending Orders: {{ pending_orders }}</p>
+<p>Completed Orders: {{ completed_orders }}</p>
+
+<!-- Table to List Orders -->
+<h3>Order Details</h3>
+<table class="generic-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User</th>
+            <th>Status</th>
+            <th>Total Price</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.user.username}}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

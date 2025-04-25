@@ -2,7 +2,7 @@
 
 {% block dashboard_content %}
 <h2>Manage Orders</h2>
-<table class="order-table">
+<table class="generic-table">
     <thead>
         <tr>
             <th>Order ID</th>
@@ -34,7 +34,7 @@
             <td>{{ order.total_price }}</td>
             <td>{{ order.status }}</td>
             <td>
-                <a href="{% url 'staff_dashboard:update_order_status' order.id %}" class="btn-action">Update</a>
+                <a href="{% url 'staff_dashboard:update_order_status' order.id %}" class="btn1">Update</a>
             </td>
         </tr>
         {% endfor %}

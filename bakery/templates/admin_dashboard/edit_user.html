@@ -5,13 +5,23 @@
 <form method="POST" class="bakery-item-form">
     {% csrf_token %}
     <p>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" value="{{ user.username }}">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}">
     </p>
 
     <p>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" value="{{ user.email }}" >
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}">
+    </p>
+
+    <p>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" value="{{ user.userprofile.address }}">
+    </p>
+
+    <p>
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" value="{{ user.userprofile.phone_number }}">
     </p>
 
     <button type="submit" class="btn2">Update</button>

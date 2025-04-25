@@ -1,4 +1,4 @@
-/* General Table Styling */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -15,29 +15,7 @@ table th {
     background-color: #f4f4f4;
 }
 
-/* Buttons */
-.btn-action, .btn-submit {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn-submit:hover, .btn-action:hover {
-    background-color: #45a049;
-}
-
-/* Forms */
-.form-control {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 .report-section p, .report-section h3, .report-section ul {
     margin-bottom: 15px;
 }
+

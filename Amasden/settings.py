@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'bakery.context_processors.global_footer_context',
             ],
         },
     },
@@ -148,7 +149,7 @@ MPESA_CONSUMER_KEY = 'w0yo5P2F0dxhLtCC3e6FbfQKy03jzuJu8oNfKKbGjaknIGAT'
 MPESA_CONSUMER_SECRET = 'hrKCaMDlLbfGTzrbaRjxlfRTuNGgjzLfgwm1aLQl6mL2ch6d8LTu5BPB8uAeOHs4'
 MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
 MPESA_BUSINESS_SHORTCODE = 174379
-MPESA_CALLBACK_URL = 'https://974e-196-202-173-156.ngrok-free.app/checkout/mpesa-callback/'
+MPESA_CALLBACK_URL = 'https://d3f6-196-202-173-156.ngrok-free.app/checkout/mpesa-callback/'
 
 
 DEBUG = True
@@ -159,8 +160,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'andysam505@gmail.com'  # Replace with your email
-EMAIL_HOST_PASSWORD = 'tmyn fmdn lkgx iejh'  # Replace with your email password
+EMAIL_HOST_USER = 'andysam505@gmail.com' 
+EMAIL_HOST_PASSWORD = 'tmyn fmdn lkgx iejh'  
 
 
 

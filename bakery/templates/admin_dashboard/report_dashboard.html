@@ -1,0 +1,44 @@
+{% extends 'admin_dashboard/template.html' %}
+
+{% block dashboard_content %}
+<h2>Generate Reports</h2>
+<table class="generic-table">
+    <thead>
+        <tr>
+            <th>Report Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Registered Users</td>
+            <td>List of all registered users on the platform.</td>
+            <td>
+                <a href="{% url 'admin_dashboard:generate_pdf_report' 'registered_users' %}" class="btn1">PDF</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Newsletter Subscribers</td>
+            <td>List of all newsletter subscriptions.</td>
+            <td>
+                <a href="{% url 'admin_dashboard:generate_pdf_report' 'newsletter_subscriptions' %}" class="btn1">PDF</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Order Summary</td>
+            <td>Summary of all orders, including pending, completed, and total orders.</td>
+            <td>
+                <a href="{% url 'admin_dashboard:generate_pdf_report' 'order_summary' %}" class="btn1">PDF</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Bakery Items</td>
+            <td>List of all bakery items available on the platform.</td>
+            <td>
+                <a href="{% url 'admin_dashboard:generate_pdf_report' 'bakery_items' %}" class="btn1">PDF</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

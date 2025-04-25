@@ -55,6 +55,13 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def update_profile(self, address=None, phone_number=None):
+        if address:
+            self.address = address
+        if phone_number:
+            self.phone_number = phone_number
+        self.save()
+
 
 # Order model for order history
 class Order(models.Model):
@@ -79,6 +86,9 @@ class Order(models.Model):
     estimated_delivery_time = models.DateTimeField(blank=True, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='Pending')
+    phone_number = models.CharField(max_length=15, blank=True, null=True) 
+    address = models.CharField(max_length=255, blank=True, null=True)
+    checkout_request_id = models.CharField(max_length=255, blank=True, null=True) 
 
     def __str__(self):
         return f"Order #{self.id} by {self.user.username if self.user else 'Anonymous'}"
@@ -92,6 +102,11 @@ class Order(models.Model):
             self.payment_status = status
             self.save()
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['status', 'payment_status']),
+        ]
+
 
 # OrderItem model to store individual order items
 class OrderItem(models.Model):
@@ -99,6 +114,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(BakeryItem, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
         return f"{self.product.name} x {self.quantity}"
@@ -109,7 +125,13 @@ class OrderItem(models.Model):
 
 
 class NewsletterSubscription(models.Model):
+    STATUS_CHOICES = [
+        ('active', 'Active'),
+        ('unsubscribed', 'Unsubscribed'),
+    ]
+
     email = models.EmailField(unique=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active') 
     date_subscribed = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

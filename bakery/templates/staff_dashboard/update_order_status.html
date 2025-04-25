@@ -2,14 +2,21 @@
 
 {% block dashboard_content %}
 <h2>Update Order Status</h2>
-<form method="POST">
+<form method="POST" class="generic-form">
     {% csrf_token %}
+    
     <label for="status">Order Status</label>
     <select name="status" id="status" class="form-control">
         <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+        <option value="In Progress" {% if order.status == "In Progress" %}selected{% endif %}>In Progress</option>
         <option value="Completed" {% if order.status == "Completed" %}selected{% endif %}>Completed</option>
         <option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
     </select>
-    <button type="submit" class="btn-submit">Update</button>
+
+    <label for="estimated_delivery_time">Estimated Delivery Time</label>
+    <input type="datetime-local" name="estimated_delivery_time" id="estimated_delivery_time" class="form-control" 
+        value="{{ order.estimated_delivery_time|date:'Y-m-d\TH:i' }}" />
+    
+    <button type="submit" class="btn1">Update</button>
 </form>
 {% endblock %}

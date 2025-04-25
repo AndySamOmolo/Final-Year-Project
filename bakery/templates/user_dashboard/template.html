@@ -14,9 +14,8 @@
         <ul>
             <li class="nav-item"><a href="{% url 'user_dashboard:account_details' %}" class="nav-link">Account Details</a></li>
             <li class="nav-item"><a href="{% url 'user_dashboard:change_password' %}" class="nav-link">Change Password</a></li>
-            <li class="nav-item"><a href="" class="nav-link">Delivery Status</a></li>
+            <li class="nav-item"><a href="{% url 'user_dashboard:delivery_status' %}" class="nav-link">Delivery Status</a></li>
             <li class="nav-item"><a href="{% url 'user_dashboard:orders' %}" class="nav-link">Orders</a></li>
-            <li class="nav-item"><a href="{% url 'user_dashboard:coupons' %}" class="nav-link">Coupons</a></li>
             <li class="nav-item"><form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="nav-link">Logout</button>

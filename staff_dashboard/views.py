@@ -22,9 +22,16 @@ def update_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if request.method == "POST":
         status = request.POST.get('status')
+        estimated_delivery_time = request.POST.get('estimated_delivery_time')
+
         order.status = status
+
+        if estimated_delivery_time:
+            order.estimated_delivery_time = estimated_delivery_time
+        
         order.save()
         return redirect('staff_dashboard:manage_orders')
+
     return render(request, 'staff_dashboard/update_order_status.html', {'order': order})
 
 
@@ -47,8 +54,3 @@ def edit_item(request, item_id):
         return redirect('staff_dashboard:update_items')
     return render(request, 'staff_dashboard/edit_item.html', {'item': item})
 
-
-@user_passes_test(staff_check)
-def manage_users(request):
-    users = User.objects.filter(is_staff=False)  # Exclude staff accounts
-    return render(request, 'staff_dashboard/manage_users.html', {'users': users})

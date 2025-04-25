@@ -59,7 +59,7 @@ def products(request):
         items = BakeryItem.objects.all()
 
     # Pagination
-    paginator = Paginator(items, 10)  # Show 10 products per page
+    paginator = Paginator(items, 10) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -76,22 +76,22 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Form data is valid, send the email
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
             send_mail(
+                name,
                 subject,
                 message,
-                email,  # From email (user's email)
-                [settings.DEFAULT_FROM_EMAIL],  # To email (you can set this in your settings)
+                email,
+                [settings.DEFAULT_FROM_EMAIL], 
                 fail_silently=False,
             )
 
             messages.success(request, "Your message has been sent successfully!")
-            return redirect('contact')  # Redirect to the same page or a thank you page
+            return redirect('contact')  
         else:
             messages.error(request, "There was an error with your form. Please try again.")
     else:
@@ -138,13 +138,12 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                # Check if the user is a superuser, staff, or regular user
                 if user.is_superuser:
-                    return redirect('admin_dashboard:add_bakery_item')  # Redirect to the admin dashboard
+                    return redirect('admin_dashboard:add_bakery_item') 
                 elif user.is_staff:
-                    return redirect('staff_dashboard:manage_orders')  # Redirect to the staff dashboard
+                    return redirect('staff_dashboard:manage_orders')
                 else:
-                    return redirect('user_dashboard:account_details')  # Redirect to the regular user dashboard
+                    return redirect('user_dashboard:account_details') 
             else:
                 messages.error(request, "Invalid username or password.")
         else:

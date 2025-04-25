@@ -8,6 +8,8 @@
             <th>ID</th>
             <th>Username</th>
             <th>Email</th>
+            <th>Address</th>
+            <th>Phone Number</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,9 +19,15 @@
             <td>{{ user.id }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
+            <td>{{ user.userprofile.address }}</td>
+            <td>{{ user.userprofile.phone_number }}</td>
             <td>
-                <a href="{% url 'admin_dashboard:edit_user' user.id %}" class="btn-action">Edit</a>
+                <a href="{% url 'admin_dashboard:edit_user' user.id %}" class="btn1">Edit</a>
             </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No users found.</td>
         </tr>
         {% endfor %}
     </tbody>

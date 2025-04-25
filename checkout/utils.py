@@ -1,20 +1,31 @@
 import requests
-import os
 import json
-from datetime import datetime
 import base64
-from django.conf import settings
+from datetime import datetime
 from decimal import Decimal
+from django.conf import settings
+import logging
+
+# Set up logging configuration
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def get_access_token():
     url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
     headers = {"Content-Type": "application/json"}
-    response = requests.get(url, auth=(settings.MPESA_CONSUMER_KEY, settings.MPESA_CONSUMER_SECRET), headers=headers)
+    
     try:
-        return response.json()['access_token']
-    except (KeyError, json.JSONDecodeError) as e:
-        print(f"Error getting access token: {e}, Response: {response.text}")
-        return None
+        response = requests.get(url, auth=(settings.MPESA_CONSUMER_KEY, settings.MPESA_CONSUMER_SECRET), headers=headers)
+        response.raise_for_status()
+        return response.json().get('access_token')
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Request error while getting access token: {e}")
+    except json.JSONDecodeError as e:
+        logger.error(f"Error decoding JSON response: {e}")
+    except KeyError as e:
+        logger.error(f"Key error - access_token not found: {e}")
+    
+    return None
 
 def generate_password():
     # Get the current timestamp in the required format (yyyyMMddHHmmss)
@@ -30,22 +41,18 @@ def generate_password():
 
 def initiate_stk_push(phone_number, amount, account_reference, transaction_desc):
     access_token = get_access_token()
-    print(f"Access token: {access_token}")
 
-    if access_token is None:
+    if not access_token:
         return {"error": "Failed to get access token"}
 
     api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 
-    # Ensure the amount is a valid integer (representing the full amount, not cents)
     try:
-        amount = int(Decimal(amount))  # Convert to integer without multiplying by 100
+        # Ensure amount is converted to an integer
+        amount = int(Decimal(amount))
     except (ValueError, TypeError) as e:
         return {"error": f"Invalid amount format: {e}"}
 
-    print(f"Converted Amount: {amount}")  # This will now print 50 if the amount is 50.00
-
-    # Generate timestamp and password
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     password = generate_password()
 
@@ -54,7 +61,7 @@ def initiate_stk_push(phone_number, amount, account_reference, transaction_desc)
         "Password": password,
         "Timestamp": timestamp,
         "TransactionType": "CustomerPayBillOnline",
-        "Amount": amount,  # Amount is now in whole units (e.g., 50)
+        "Amount": amount,
         "PartyA": phone_number,
         "PartyB": settings.MPESA_BUSINESS_SHORTCODE,
         "PhoneNumber": phone_number,
@@ -63,18 +70,30 @@ def initiate_stk_push(phone_number, amount, account_reference, transaction_desc)
         "TransactionDesc": transaction_desc
     }
 
+    logger.info(f"Initiating STK push with AccountReference: {account_reference}")
+
     headers = {
         "Authorization": f"Bearer {access_token}"
     }
 
     try:
         response = requests.post(api_url, json=payload, headers=headers)
-        response_json = response.json()  # Get the response as JSON
-        print("API Response:", json.dumps(response_json, indent=4))  # Pretty-print the raw response
+        response.raise_for_status()
+
+        response_json = response.json()
+        logger.info("STK Push API Response: %s", json.dumps(response_json, indent=4))
         
+        # Check for error responses
+        if response.status_code != 200:
+            return {"error": f"API Error: {response_json.get('errorMessage', 'Unknown error')}"}
+
         return response_json
     except requests.exceptions.RequestException as e:
+        logger.error(f"Request error during STK push: {e}")
         return {"error": f"Request error: {e}"}
     except json.JSONDecodeError as e:
+        logger.error(f"Error decoding response JSON: {e}")
         return {"error": f"JSON decoding error: {e}"}
-
+    except Exception as e:
+        logger.error(f"Unexpected error during STK push: {e}")
+        return {"error": f"Unexpected error: {e}"}

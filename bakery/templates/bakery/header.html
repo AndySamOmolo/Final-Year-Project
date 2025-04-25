@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{% static 'css/user_dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/generic.css' %}">
     <script src="{% static 'js/master.js' %}"></script>
   </head>
   <body>
@@ -61,8 +63,9 @@
           </svg>
         </a>
       </div>
-      <button class="menu-toggle" aria-label="Menu toggle"><span>&#9776;</span></button>
+      <button class="menu-toggle" aria-label="Menu toggle" onclick="toggleVisibility()"><span>&#9776;</span></button>
     </nav>
+
 {% if messages %}
     <div class="messages">
         {% for message in messages %}
@@ -86,5 +89,16 @@
         {% endfor %}
     </div>
 {% endif %}
+
+    <script>
+        function toggleVisibility() {
+              var content = document.getElementById('navbarNav');
+              if (content.style.display === 'none') {
+                  content.style.display = 'block';  
+              } else {
+                  content.style.display = 'none';  
+              }
+        }
+    </script>
   </body>
 </html>
