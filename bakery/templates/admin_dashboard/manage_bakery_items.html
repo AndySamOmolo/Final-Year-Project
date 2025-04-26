@@ -1,0 +1,161 @@
+{% extends 'admin_dashboard/template.html' %}
+
+{% block dashboard_content %}
+<div>
+    <h2>Manage Categories, Toppings, Sizes, and Bakery Items</h2>
+
+    <br>
+    <!-- CATEGORIES -->
+    <div>
+        <h3>Categories</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cat in categories %}
+                    <tr>
+                        <td>{{ cat.name }}</td>
+                        <td>
+                            <a href="{% url 'admin_dashboard:edit_category' cat.id %}">Edit</a> | 
+                            <a href="{% url 'admin_dashboard:delete_category' cat.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No categories yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="post" class="generic-form">
+            {% csrf_token %}
+            {{ category_form.name.label_tag }} {{ category_form.name }}
+            <input type="hidden" name="category_name" value="1">
+            <button type="submit" class="btn1">Add Category</button>
+        </form>
+    </div>
+
+    <br>
+    <hr>
+    <!-- TOPPINGS -->
+    <div>
+        <h3>Toppings</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price Adjustment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for top in toppings %}
+                    <tr>
+                        <td>{{ top.name }}</td>
+                        <td>Kshs {{ top.price_adjustment }}</td>
+                        <td>
+                            <a href="{% url 'admin_dashboard:edit_topping' top.id %}">Edit</a> | 
+                            <a href="{% url 'admin_dashboard:delete_topping' top.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">No toppings yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="post" class="generic-form">
+            {% csrf_token %}
+            {{ topping_form.name.label_tag }} {{ topping_form.name }}
+            {{ topping_form.price_adjustment.label_tag }} {{ topping_form.price_adjustment }}
+            <input type="hidden" name="topping_name" value="1">
+            <button type="submit" class="btn1">Add Topping</button>
+        </form>
+    </div>
+
+    <br>
+    <hr>
+    <!-- SIZES -->
+    <div>
+        <h3>Sizes</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price Adjustment</th>
+                    <th>Serves</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for size in sizes %}
+                    <tr>
+                        <td>{{ size.name }}</td>
+                        <td>Kshs {{ size.price_adjustment }}</td>
+                        <td>{{ size.serves }}</td>
+                        <td>
+                            <a href="{% url 'admin_dashboard:edit_size' size.id %}">Edit</a> | 
+                            <a href="{% url 'admin_dashboard:delete_size' size.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No sizes yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="post" class="generic-form">
+            {% csrf_token %}
+            {{ size_form.name.label_tag }} {{ size_form.name }}
+            {{ size_form.price_adjustment.label_tag }} {{ size_form.price_adjustment }}
+            {{ size_form.serves.label_tag }} {{ size_form.serves }}
+            <input type="hidden" name="size_name" value="1">
+            <button type="submit" class="btn1">Add Size</button>
+        </form>
+    </div>
+
+    <br>
+    <hr>
+    <!-- BAKERY ITEMS -->
+    <div>
+        <h3>Bakery Items</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.category.name }}</td>
+                        <td>Kshs {{ item.price }}</td>
+                        <td>
+                            <a href="{% url 'admin_dashboard:edit_bakery_item' item.id %}">Edit</a> | 
+                            <a href="{% url 'admin_dashboard:delete_bakery_item' item.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No items yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

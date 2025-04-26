@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomRegisterForm, CustomLoginForm
 from django.contrib import messages
-from .models import BakeryItem, Category, BakeryItem
+from .models import BakeryItem, Category, BakeryItem, Size, Topping
 from cart.models import CartItem 
 from django.core.paginator import Paginator
 from .forms import NewsletterSubscriptionForm, ContactForm
@@ -42,9 +42,6 @@ def home(request):
     return render(request, 'bakery/home.html', context)
 
 
-
-
-
 def products(request):
     categories = Category.objects.all()
     
@@ -56,7 +53,6 @@ def products(request):
     else:
         items = BakeryItem.objects.all()
 
-    # Pagination
     paginator = Paginator(items, 10) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -80,10 +76,9 @@ def contact(request):
             message = form.cleaned_data['message']
 
             send_mail(
-                name,
-                subject,
-                message,
-                email,
+                subject,       
+                message,       
+                email,          
                 [settings.DEFAULT_FROM_EMAIL], 
                 fail_silently=False,
             )
@@ -103,7 +98,14 @@ def account(request):
 
 def cake_template(request, slug):
     item = get_object_or_404(BakeryItem, slug=slug)
-    return render(request, 'bakery/cake-template.html', {'item' : item})
+    sizes = Size.objects.all() 
+    toppings = Topping.objects.all() 
+    
+    return render(request, 'bakery/cake-template.html', {
+        'item': item,
+        'sizes': sizes,
+        'toppings': toppings
+    })
 
 @login_required
 def user_dashboard(request):  
@@ -148,3 +150,12 @@ def login_view(request):
         form = CustomLoginForm()
 
     return render(request, 'bakery/login.html', {'form': form})
+
+def search_bakery_items(request):
+    query = request.GET.get('q', '')  
+    items = BakeryItem.objects.none()
+
+    if query:
+        items = BakeryItem.objects.filter(name__icontains=query)
+
+    return render(request, 'bakery/products.html', {'items': items, 'query': query})

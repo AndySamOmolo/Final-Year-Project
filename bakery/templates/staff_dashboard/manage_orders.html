@@ -19,7 +19,7 @@
             <td>{{ order.id }}</td>
             <td>
                 {% if order.user %}
-                    {{ order.user.username }}
+                    <a href="{% url 'staff_dashboard:user_detail' order.user.id %}">{{ order.user.username }}</a>
                 {% else %}
                     Guest
                 {% endif %}

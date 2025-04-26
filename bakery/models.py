@@ -17,6 +17,22 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Topping(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    price_adjustment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.name
+
+
+class Size(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    price_adjustment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    serves = models.CharField(max_length=50, blank=True, null=True) 
+
+    def __str__(self):
+        return self.name
 
 
 class BakeryItem(models.Model):
@@ -46,7 +62,6 @@ class BakeryItem(models.Model):
         return self.name
 
 
-# UserProfile to store additional information
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
@@ -63,7 +78,6 @@ class UserProfile(models.Model):
         self.save()
 
 
-# Order model for order history
 class Order(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
@@ -108,7 +122,6 @@ class Order(models.Model):
         ]
 
 
-# OrderItem model to store individual order items
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
     product = models.ForeignKey(BakeryItem, on_delete=models.CASCADE)

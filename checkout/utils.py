@@ -6,7 +6,6 @@ from decimal import Decimal
 from django.conf import settings
 import logging
 
-# Set up logging configuration
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -28,7 +27,6 @@ def get_access_token():
     return None
 
 def generate_password():
-    # Get the current timestamp in the required format (yyyyMMddHHmmss)
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
 
     # Concatenate Business Short Code, PassKey, and Timestamp
@@ -48,7 +46,6 @@ def initiate_stk_push(phone_number, amount, account_reference, transaction_desc)
     api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 
     try:
-        # Ensure amount is converted to an integer
         amount = int(Decimal(amount))
     except (ValueError, TypeError) as e:
         return {"error": f"Invalid amount format: {e}"}
@@ -83,7 +80,6 @@ def initiate_stk_push(phone_number, amount, account_reference, transaction_desc)
         response_json = response.json()
         logger.info("STK Push API Response: %s", json.dumps(response_json, indent=4))
         
-        # Check for error responses
         if response.status_code != 200:
             return {"error": f"API Error: {response_json.get('errorMessage', 'Unknown error')}"}
 

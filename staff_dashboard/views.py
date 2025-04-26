@@ -3,14 +3,29 @@ from django.contrib.auth.decorators import user_passes_test
 from bakery.models import Order, BakeryItem, OrderItem
 from django.db.models import Sum
 from django.contrib.auth.models import User
-
-
+from django.core.mail import send_mass_mail
+from django.conf import settings
+from bakery.models import NewsletterSubscription
+from django.contrib import messages
 
 def staff_check(user):
     return user.is_staff and not user.is_superuser
 
+@user_passes_test(staff_check)
+def user_detail(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    orders = Order.objects.filter(user=user).order_by('-created_at')
+    
+    phone_number = user.profile.phone_number if hasattr(user, 'profile') else 'Not provided'
+    address = user.profile.address if hasattr(user, 'profile') else 'Not provided'
 
-# Manage Orders
+    return render(request, 'staff_dashboard/user_detail.html', {
+        'user': user,
+        'orders': orders,
+        'phone_number': phone_number,
+        'address': address
+    })
+
 @user_passes_test(staff_check)
 def manage_orders(request):
     orders = Order.objects.filter(status='In Progress').prefetch_related('order_items__product').order_by('-created_at')
@@ -34,8 +49,26 @@ def update_order_status(request, order_id):
 
     return render(request, 'staff_dashboard/update_order_status.html', {'order': order})
 
+@user_passes_test(staff_check)
+def send_newsletter(request):
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
 
-# Update Bakery Items
+        if subject and message:
+            subscribers = NewsletterSubscription.objects.filter(status='active')
+            recipient_list = [sub.email for sub in subscribers]
+
+            messages_to_send = [(subject, message, settings.DEFAULT_FROM_EMAIL, [email]) for email in recipient_list]
+
+            send_mass_mail(messages_to_send, fail_silently=False)
+            messages.success(request, f"Newsletter sent to {len(recipient_list)} subscribers.")
+            return redirect('staff_dashboard:send_newsletter')
+        else:
+            messages.error(request, "Please enter both subject and message.")
+
+    return render(request, 'staff_dashboard/send_newsletter.html')
+
 @user_passes_test(staff_check)
 def update_items(request):
     items = BakeryItem.objects.all()

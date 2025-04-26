@@ -1,0 +1,35 @@
+{% extends 'staff_dashboard/template.html' %}
+
+{% block dashboard_content %}
+<h2>{{ user.username }}'s Details</h2>
+
+<p><strong>Phone Number:</strong> {{ phone_number }}</p>
+<p><strong>Address:</strong> {{ address }}</p>
+
+<h3>Order History</h3>
+<table class="generic-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.total_price }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No orders found for this user.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -3,39 +3,50 @@
 
 <div class="product-container">
   <div class="product-image">
-    <img src="{{ item.image.url }}" alt="Cake Name">
+    <img src="{{ item.image.url }}" alt="{{ item.name }}">
   </div>
   <div class="product-details">
     <h2>{{ item.name }}</h2>
+    <strong>Price:</strong> <span id="base-price">{{ item.price }}</span> {{ item.currency }}
     <p class="description2">{{ item.description }}</p>
     <form method="post" action="{% url 'cart:add_to_cart' item.id %}">
       {% csrf_token %}
       <ul class="product-info">
+        <!-- SIZE -->
         <li>
           <label for="size">Size:</label>
           <select id="size" name="size">
-            <option value="Small">Small</option>
-            <option value="Medium" selected>Medium</option>
-            <option value="Large">Large</option>
+            {% for size in sizes %}
+              <option value="{{ size.name }}" data-price-adjust="{{ size.price_adjustment }}" data-serves="{{ size.serves }}">
+                {{ size.name }} (Serves {{ size.serves }})
+              </option>
+            {% endfor %}
           </select>
         </li>
+
+        <!-- TOPPINGS -->
         <li>
           <label for="toppings">Toppings:</label>
           <select id="toppings" name="toppings">
-            <option value="Chocolate Chips">Chocolate Chips</option>
-            <option value="Rainbow Sprinkles" selected>Rainbow Sprinkles</option>
-            <option value="Strawberries">Strawberries</option>
+            <option value="None" data-price-adjust="0" selected>None</option>
+            {% for topping in toppings %}
+              <option value="{{ topping.name }}" data-price-adjust="{{ topping.price_adjustment }}">
+                {{ topping.name }} (+{{ item.currency }} {{ topping.price_adjustment }})
+              </option>
+            {% endfor %}
           </select>
         </li>
+
         <li>
           <label for="message">Custom Message:</label>
           <textarea id="message" name="message" rows="3" cols="30"></textarea>
         </li>
-        <li><strong>Price:</strong> {{ item.get_price_with_currency }} </li>
-        <li><strong>Ingredients:</strong> Flour, sugar, eggs, butter, cocoa powder</li>
+        <li><strong>Ingredients:</strong> {{ item.ingredients }}</li>
       </ul>
       <label for="quantity">Quantity:</label>
       <input type="number" id="quantity" name="quantity" min="1" max="10" value="1">
+      <br>
+      <strong>Total Price:</strong> <span id="total-price">{{ item.get_price_with_currency }}</span>
       <div class="btnopt">
         <button type="submit" class="btn1">Add to Cart</button>
       </div>
@@ -72,7 +83,7 @@
   margin-bottom: 1rem;
 }
 
-.product-details .description {
+.product-details .description2 {
   font-size: 1.2rem;
   margin-bottom: 2rem;
 }
@@ -109,18 +120,8 @@ input[type="number"] {
   margin-right: 1rem;
 }
 
-.add-to-cart-btn {
-  font-size: 1.2rem;
-  padding: 0.5rem 1rem;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-to-cart-btn:hover {
-  background-color: #555;
+.btnopt {
+  margin-top: 1rem;
 }
 
 select {
@@ -132,9 +133,35 @@ textarea {
   font-size: 1.2rem;
   margin-right: 1rem;
 }
-
 </style>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sizeSelect = document.getElementById('size');
+    const toppingsSelect = document.getElementById('toppings');
+    const quantityInput = document.getElementById('quantity');
+    const basePriceElement = document.getElementById('base-price');
+    const totalPriceElement = document.getElementById('total-price');
+    const currency = "{{ item.currency }}";
 
+    function updateTotalPrice() {
+      const basePrice = parseFloat(basePriceElement.textContent);
+      const sizeAdjustment = parseFloat(sizeSelect.options[sizeSelect.selectedIndex].dataset.priceAdjust) || 0;
+      const toppingsAdjustment = parseFloat(toppingsSelect.options[toppingsSelect.selectedIndex].dataset.priceAdjust) || 0;
+      const quantity = parseInt(quantityInput.value) || 1;
+
+      const totalPrice = (basePrice + sizeAdjustment + toppingsAdjustment) * quantity;
+      totalPriceElement.textContent = totalPrice.toFixed(2) + " " + currency;
+    }
+
+    // Initial calculation on page load
+    updateTotalPrice();
+
+    // Update total price when size, toppings, or quantity changes
+    sizeSelect.addEventListener('change', updateTotalPrice);
+    toppingsSelect.addEventListener('change', updateTotalPrice);
+    quantityInput.addEventListener('input', updateTotalPrice);
+  });
+</script>
 
 {% include "bakery/footer.html" %}

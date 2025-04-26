@@ -29,7 +29,7 @@
     
 </style>
 
-<h2>Bakery Items Report</h2>
+<h2>Bakery Items Sales Report</h2>
 <table class="generic-table">
     <thead>
         <tr>
@@ -38,28 +38,30 @@
             <th>Price</th>
             <th>Available</th>
             <th>Category</th>
-            <th>Sales</th>
+            <th>Total Quantity Sold</th>
+            <th>Total Revenue</th>
         </tr>
     </thead>
     <tbody>
-        {% for item in bakery_items %}
+        {% for data in sales_data %}
         <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.get_price_with_currency }}</td>
-            <td>{{ item.available }}</td>
+            <td>{{ data.item.name }}</td>
+            <td>{{ data.item.description }}</td>
+            <td>{{ data.item.get_price_with_currency }}</td>
+            <td>{{ data.item.available }}</td>
             <td>
-                {% if item.category %}
-                    {{ item.category.name }}
+                {% if data.item.category %}
+                    {{ data.item.category.name }}
                 {% else %}
                     None
                 {% endif %}
             </td>
-            <td>{{ item.sales }}</td>
+            <td>{{ data.total_quantity_sold }}</td>
+            <td>{{ data.total_revenue }}</td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="6">No bakery items available</td>
+            <td colspan="7">No bakery items available</td>
         </tr>
         {% endfor %}
     </tbody>

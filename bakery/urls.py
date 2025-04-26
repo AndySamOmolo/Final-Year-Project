@@ -12,5 +12,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('cake/<slug:slug>/', views.cake_template, name='cake_template'),
     path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
+    path('search/', views.search_bakery_items, name='search_bakery_items'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
 ]

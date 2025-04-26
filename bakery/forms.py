@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, NewsletterSubscription
+from .models import UserProfile, NewsletterSubscription, Category, Topping, Size
 
 class NewsletterSubscriptionForm(forms.ModelForm):
     class Meta:
@@ -38,7 +38,6 @@ class UserProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Prepopulate the `email`, `first_name`, and `last_name` fields with the current user's data
         if self.instance.user:
             self.fields['email'].initial = self.instance.user.email
             self.fields['first_name'].initial = self.instance.user.first_name
@@ -47,7 +46,6 @@ class UserProfileForm(forms.ModelForm):
     def save(self, commit=True):
         user_profile = super().save(commit=False)
         
-        # Update user info (email, first_name, last_name)
         if self.cleaned_data.get('email'):
             user_profile.user.email = self.cleaned_data['email']
         if self.cleaned_data.get('first_name'):
@@ -56,7 +54,24 @@ class UserProfileForm(forms.ModelForm):
             user_profile.user.last_name = self.cleaned_data['last_name']
         
         if commit:
-            user_profile.user.save()  # Save the changes to the User model
-            user_profile.save()  # Save the UserProfile model
+            user_profile.user.save() 
+            user_profile.save()  
 
         return user_profile
+    
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
+
+
+class ToppingForm(forms.ModelForm):
+    class Meta:
+        model = Topping
+        fields = ['name', 'price_adjustment']
+
+
+class SizeForm(forms.ModelForm):
+    class Meta:
+        model = Size
+        fields = ['name', 'price_adjustment', 'serves']

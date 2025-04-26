@@ -12,7 +12,7 @@
     <div class="cart-product-item">
         <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100">
         <p><strong>{{ item.product.name }}</strong> ({{ item.quantity }})</p>
-        <p>Price per unit: Kshs. {{ item.product.price }}</p>
+        <p>Price per kg: Kshs. {{ item.product.price }}</p>
         <p>Total: Kshs. {{ item.get_total_price }}</p>
         <form action="{% url 'cart:update_quantity' item.id %}" method="post">
             {% csrf_token %}

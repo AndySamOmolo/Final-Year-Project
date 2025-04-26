@@ -19,7 +19,6 @@ def change_password(request):
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
-            # Update the session to keep the user logged in after password change
             update_session_auth_hash(request, form.user)
             return redirect('user_dashboard:account_details') 
     else:
