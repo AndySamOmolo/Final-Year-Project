@@ -46,7 +46,7 @@
       <label for="quantity">Quantity:</label>
       <input type="number" id="quantity" name="quantity" min="1" max="10" value="1">
       <br>
-      <strong>Total Price:</strong> <span id="total-price">{{ item.get_price_with_currency }}</span>
+      <h2>Total Price:</h2><span id="total-price"> {{ item.get_price_with_currency }}</span>
       <div class="btnopt">
         <button type="submit" class="btn1">Add to Cart</button>
       </div>
@@ -154,10 +154,9 @@ textarea {
       totalPriceElement.textContent = totalPrice.toFixed(2) + " " + currency;
     }
 
-    // Initial calculation on page load
     updateTotalPrice();
 
-    // Update total price when size, toppings, or quantity changes
+ 
     sizeSelect.addEventListener('change', updateTotalPrice);
     toppingsSelect.addEventListener('change', updateTotalPrice);
     quantityInput.addEventListener('input', updateTotalPrice);
