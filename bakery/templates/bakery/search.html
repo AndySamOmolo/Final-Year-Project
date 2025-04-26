@@ -1,0 +1,48 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+<div>
+
+    <div class="search_div">
+      <h2>Search</h2>
+      <form method="get" action="{% url 'search_bakery_items' %}" class="generic-form">
+        <div class="input-group">
+          <input type="text" name="q"  placeholder="Search for bakery items..." value="{{ query }}">
+          <button class="btn1" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+
+
+  <div class="items-container2">
+    {% if query %}
+      {% if items %}
+        {% for item in items %}
+        <div class="item">
+          <div class="image-container">
+            {% if item.image %}
+              <img src="{{ item.image.url }}" alt="{{ item.name }}">
+            {% else %}
+              <img src="{% static 'images/default.png' %}" alt="No image available">
+            {% endif %}
+          </div>
+          <div class="description">
+            <p>{{ item.name }}</p>
+            <p>{{ item.get_price_with_currency }}</p>
+          </div>
+          <div class="btnopt">
+            <a href="{% url 'cake_template' slug=item.slug %}" class="btn1">Select Options</a>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p>No bakery items found matching your search.</p>
+      {% endif %}
+    {% else %}
+      <p>Enter a keyword above to search for bakery items.</p>
+    {% endif %}
+  </div>
+
+</div>
+
+{% include "bakery/footer.html" %}

@@ -17,3 +17,18 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 });
+
+function SearchFunction() {
+    document.getElementById('search-popup').style.display = "block";
+    document.querySelector('.search-btn').style.display = "none";
+  }
+
+function closeSearchPopup() {
+    document.getElementById('search-popup').style.display = "none";
+    document.querySelector('.search-btn').style.display = "block"; 
+}
+
+window.onload = function() {
+    document.getElementById('search-popup').style.display = "none";
+    document.querySelector('.search-btn').style.display = "block";
+};

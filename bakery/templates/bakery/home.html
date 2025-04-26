@@ -47,36 +47,4 @@
 
 
 
-<div id="search-popup" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeSearchPopup()">&times;</span>
-    <h2>Search Bakery Items</h2>
-    <form method="get" action="{% url 'search_bakery_items' %}">
-      <input type="text" id="search-input" name="q" placeholder="Search for items..." value="{{ query }}">
-      <button type="submit">Search</button>
-    </form>
-
-    <!-- Display search results here -->
-    {% if items %}
-      <ul id="search-results">
-        {% for item in items %}
-          <li>{{ item.name }} - Kshs {{ item.price }}</li>
-        {% empty %}
-          <li>No items found.</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </div>
-</div>
-
-<script>
-  function SearchFunction() {
-    document.getElementById('search-popup').style.display = "block";
-  }
-
-  function closeSearchPopup() {
-    document.getElementById('search-popup').style.display = "none";
-  }
-</script>
-
 {% include "bakery/footer.html" %}

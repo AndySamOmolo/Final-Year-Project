@@ -158,4 +158,4 @@ def search_bakery_items(request):
     if query:
         items = BakeryItem.objects.filter(name__icontains=query)
 
-    return render(request, 'bakery/products.html', {'items': items, 'query': query})
+    return render(request, 'bakery/search.html', {'items': items, 'query': query})

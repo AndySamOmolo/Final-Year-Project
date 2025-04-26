@@ -1001,14 +1001,14 @@ background-color: white;
 /* Pagination Container */
 .pagination-container {
   text-align: center;
-  margin: 20px 0; /* Adjust to move it closer to the footer */
+  margin: 20px 0; 
 }
 
 /* Pagination Links */
 .pagination {
   display: inline-block;
   padding: 10px;
-  background-color: #f9f9f9; /* Optional: Background for pagination */
+  background-color: #f9f9f9; 
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -1024,7 +1024,6 @@ background-color: white;
   transition: background-color 0.3s ease;
 }
 
-/* Hover Effect */
 .pagination a:hover {
   background-color: purple;
   color: seashell;
@@ -1042,3 +1041,48 @@ background-color: white;
 }
 
 
+
+/* Search Page */
+.search_div .input-group button{
+  margin-top: 15px;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#search-popup {
+  display: none;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.close {
+  margin-right: 5px;
+  cursor: pointer;
+  font-size: x-large;
+}
+
+.btn5 {
+  border-radius: 5px;
+  border: none;
+  background-color: seashell;
+  color: purple;
+  padding: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border: solid 1px purple;
+  text-decoration: none;
+}
+
+
+
+.btn5:hover {
+  background-color: purple;
+  color: seashell;
+}
