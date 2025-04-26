@@ -152,7 +152,7 @@ MPESA_BUSINESS_SHORTCODE = 174379
 MPESA_CALLBACK_URL = 'https://d3f6-196-202-173-156.ngrok-free.app/checkout/mpesa-callback/'
 
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 
