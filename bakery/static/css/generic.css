@@ -1,0 +1,95 @@
+.generic-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+
+.generic-form label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+
+.generic-form input[type="text"],
+.generic-form input[type="email"],
+.generic-form input[type="password"],
+.generic-form input[type="datetime-local"],
+.generic-form select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.generic-form input[type="text"]:focus,
+.generic-form input[type="email"]:focus,
+.generic-form input[type="password"]:focus,
+.generic-form input[type="datetime-local"]:focus,
+.generic-form select:focus {
+    border-color: purple;
+    outline: none;
+}
+
+
+
+.generic-table .btn1 {
+    padding: 5px 10px;
+}
+
+
+.generic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+
+.generic-table th,
+.generic-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.generic-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.generic-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.generic-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.generic-table li {
+    list-style: none;
+}
+
+
+.status-pending {
+    color: orange;
+}
+
+.status-completed {
+    color: green;
+}
+
+.status-cancelled {
+    color: red;
+}
+
+
+

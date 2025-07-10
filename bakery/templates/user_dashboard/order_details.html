@@ -1,0 +1,35 @@
+{% extends 'user_dashboard/template.html' %}
+
+{% block dashboard_content %}
+<h2>Order Details</h2>
+
+<div class="order-summary">
+    <h3>Order #{{ order.id }}</h3>
+    <p>Status: <span class="status-{{ order.status|lower }}">{{ order.status }}</span></p>
+    <p>Payment Status: <span class="status-{{ order.payment_status|lower }}">{{ order.payment_status }}</span></p>
+    
+    <h4>Order Items</h4>
+    <table class="generic-table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Estimated Delivery Time:</h4>
+    <p class="delivery-time">{{ estimated_delivery_time|date:"D, d M Y H:i" }}</p>
+</div>
+
+{% endblock %}

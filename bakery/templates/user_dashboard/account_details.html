@@ -1,0 +1,13 @@
+{% extends 'user_dashboard/template.html' %}
+
+{% block dashboard_content %}
+    <h2>Account Details</h2>
+
+    <form method="post" class="user-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn1">Update Details</button>
+    </form>
+    
+
+{% endblock %}

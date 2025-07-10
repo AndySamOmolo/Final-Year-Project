@@ -1,0 +1,56 @@
+/* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Badge Styling */
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    color: white;
+    display: inline-block;
+}
+
+.badge-warning { background-color: #ffc107; } /* Yellow */
+.badge-info { background-color: #17a2b8; }    /* Light blue */
+.badge-success { background-color: #28a745; } /* Green */
+.badge-danger { background-color: #dc3545; }  /* Red */
+.badge-secondary { background-color: #6c757d; } /* Gray */
+
+/* Progress Bar Styling */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+    width: 100%;
+}
+
+.progress-bar {
+    height: 100%;
+    transition: width 0.4s ease;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.progress-warning { background-color: #ffc107; }
+.progress-info { background-color: #17a2b8; }
+.progress-success { background-color: #28a745; }
+.progress-danger { background-color: #dc3545; }
+.progress-secondary { background-color: #6c757d; }

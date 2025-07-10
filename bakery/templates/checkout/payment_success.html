@@ -1,0 +1,9 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+
+  <h1>Payment Success</h1>
+  <p>Your payment was successful! Your order is being processed.</p>
+  <a href="{% url 'user_dashboard:orders' %}">View your orders</a>
+
+{% include "bakery/footer.html" %}

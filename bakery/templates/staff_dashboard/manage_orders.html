@@ -1,0 +1,44 @@
+{% extends 'staff_dashboard/template.html' %}
+
+{% block dashboard_content %}
+<h2>Manage Orders</h2>
+<table class="generic-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Products</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>
+                {% if order.user %}
+                    <a href="{% url 'staff_dashboard:user_detail' order.user.id %}">{{ order.user.username }}</a>
+                {% else %}
+                    Guest
+                {% endif %}
+            </td>
+            <td>
+                <ul>
+                    {% for item in order.order_items.all %}
+                    <li>{{ item.product.name }} (x{{ item.quantity }})</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+                <a href="{% url 'staff_dashboard:update_order_status' order.id %}" class="btn1">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

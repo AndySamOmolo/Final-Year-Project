@@ -1,0 +1,33 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+<div class="user_dashboard_details">
+    <h1>Welcome, {{ user.username }}</h1>
+    <p>This is your account dashboard. You can add or review information here.</p>
+</div>
+
+<div class="dashboard_div">
+<aside class="user_aside">
+    <nav>
+        <h2>My Account</h2>
+        <hr class="horizontal">
+        <ul>
+            <li class="nav-item"><a href="{% url 'user_dashboard:account_details' %}" class="nav-link">Account Details</a></li>
+            <li class="nav-item"><a href="{% url 'user_dashboard:change_password' %}" class="nav-link">Change Password</a></li>
+            <li class="nav-item"><a href="{% url 'user_dashboard:delivery_status' %}" class="nav-link">Delivery Status</a></li>
+            <li class="nav-item"><a href="{% url 'user_dashboard:orders' %}" class="nav-link">Orders</a></li>
+            <li class="nav-item"><form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="nav-link">Logout</button>
+            </form></li>
+        </ul>
+    </nav>
+</aside>
+
+<div class="dashboard_section">
+{% block dashboard_content %}
+{% endblock %}
+</div>
+</div>
+
+{% include "bakery/footer.html" %}

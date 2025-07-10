@@ -1,0 +1,50 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+ <div class="banner">
+   <p>WELCOME </p>
+   <p>TO AMASDEN</p>
+   <p>BAKERY</p>
+  </div>
+
+
+  <div class="container">
+    <h1 class="tagline">Bestsellers in Our Bakery</h1>
+  
+    <div class="items-container">
+      {% for product in bestsellers %}
+        <div class="item">
+          <div class="image-container">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          </div>
+          <div class="description">
+            <p>{{ product.name }}</p>
+            <p>{{ product.get_price_with_currency }}</p>
+          </div>
+          <div class="btnopt">
+            <a href="{% url 'cake_template' slug=product.slug %}" class="btn1">Select Options</a>
+          </div>
+        </div>
+      {% empty %}
+        <p>No bestsellers available at the moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+<div class="newsletter-container">
+  <form action="{% url 'home' %}" method="post" class="newsletter-form">
+    {% csrf_token %}
+    <div class="subscribe-title">
+      <h4>Subscribe to Our Newsletter</h4>
+    </div>
+    <div class="form-group">
+      <label for="email" class="sr-only">Email address</label>
+      {{ form.email }} 
+      <button type="submit" class="btn2">Subscribe</button>
+    </div>
+  </form>
+</div>
+
+
+
+{% include "bakery/footer.html" %}

@@ -1,0 +1,9 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+<h1>Payment Pending</h1>
+<p>We have initiated the payment request. Please check your phone and enter your M-Pesa PIN to complete the payment.</p>
+<p>If you encounter any issues, contact support.</p>
+<a href="{% url 'user_dashboard:orders' %}">View My Orders</a>
+
+{% include "bakery/footer.html" %}

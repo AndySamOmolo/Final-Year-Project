@@ -1,0 +1,204 @@
+from bakery.models import Order, UserProfile, User
+from bakery.models import BakeryItem
+
+# Create new users (customers)
+user4 = User.objects.create_user(username="luke_morris", password="password112", first_name="Luke", last_name="Morris")
+user5 = User.objects.create_user(username="sophie_turner", password="password113", first_name="Sophie", last_name="Turner")
+user6 = User.objects.create_user(username="oliver_king", password="password114", first_name="Oliver", last_name="King")
+
+# Create new staff (users with staff privileges)
+staff_user3 = User.objects.create_user(username="michael_brown", password="staff789", first_name="Michael", last_name="Brown")
+staff_user3.is_staff = True  # Set this user as staff
+staff_user3.save()
+
+staff_user4 = User.objects.create_user(username="lucy_davis", password="staff012", first_name="Lucy", last_name="Davis")
+staff_user4.is_staff = True  # Set this user as staff
+staff_user4.save()
+
+# Create user profiles for the new users
+profile4 = UserProfile.objects.create(user=user4, address="789 Birch St.", phone_number="5556789012")
+profile5 = UserProfile.objects.create(user=user5, address="101 Pine Ave.", phone_number="5553456789")
+profile6 = UserProfile.objects.create(user=user6, address="202 Maple Rd.", phone_number="5559871234")
+
+# Create staff profiles (optional, if you want to store additional information for staff)
+staff_profile3 = UserProfile.objects.create(user=staff_user3, address="303 Oak St.", phone_number="5554567890")
+staff_profile4 = UserProfile.objects.create(user=staff_user4, address="404 Cedar St.", phone_number="5556549870")
+
+# Create orders for the new users
+item1 = BakeryItem.objects.get(name="Chocolate Lava Cake")  # Example, ensure items are already created
+item2 = BakeryItem.objects.get(name="Fruitcake Deluxe")    # Example, ensure items are already created
+
+# New orders for users
+order6 = Order.objects.create(
+    user=user4,
+    product=item1,
+    quantity=2,
+    total_price=item1.price * 2,
+    status="Pending"
+)
+
+order7 = Order.objects.create(
+    user=user5,
+    product=item2,
+    quantity=1,
+    total_price=item2.price,
+    status="Completed"
+)
+
+order8 = Order.objects.create(
+    user=user6,
+    product=item1,
+    quantity=3,
+    total_price=item1.price * 3,
+    status="Pending"
+)
+
+# New orders for staff members
+order9 = Order.objects.create(
+    user=staff_user3,
+    product=item2,
+    quantity=5,
+    total_price=item2.price * 5,
+    status="Completed"
+)
+
+order10 = Order.objects.create(
+    user=staff_user4,
+    product=item1,
+    quantity=1,
+    total_price=item1.price,
+    status="Pending"
+)
+
+
+from bakery.models import Category, BakeryItem, UserProfile, Order
+from django.contrib.auth.models import User
+from bakery.models import UserProfile
+
+# Create categories for different types of cakes
+chocolate_cakes = Category.objects.create(name="Chocolate Cakes")
+fruit_cakes = Category.objects.create(name="Fruit Cakes")
+cheesecakes = Category.objects.create(name="Cheesecakes")
+cupcakes = Category.objects.create(name="Cupcakes")
+gluten_free_cakes = Category.objects.create(name="Gluten-Free Cakes")
+vegan_cakes = Category.objects.create(name="Vegan Cakes")
+
+# Create bakery items under different categories
+item1 = BakeryItem.objects.create(
+    name="Chocolate Lava Cake",
+    description="A decadent chocolate cake with molten chocolate center.",
+    price=20.00,
+    image="path/to/chocolate_lava_cake.jpg",
+    available=True,
+    category=chocolate_cakes
+)
+
+item2 = BakeryItem.objects.create(
+    name="Fruitcake Deluxe",
+    description="A rich fruitcake with mixed dried fruits and nuts.",
+    price=25.50,
+    image="path/to/fruitcake_deluxe.jpg",
+    available=True,
+    category=fruit_cakes
+)
+
+item3 = BakeryItem.objects.create(
+    name="Classic Cheesecake",
+    description="A creamy cheesecake with a buttery graham cracker crust.",
+    price=22.75,
+    image="path/to/classic_cheesecake.jpg",
+    available=True,
+    category=cheesecakes
+)
+
+item4 = BakeryItem.objects.create(
+    name="Vanilla Cupcake",
+    description="Light and fluffy vanilla cupcakes with buttercream frosting.",
+    price=15.99,
+    image="path/to/vanilla_cupcake.jpg",
+    available=True,
+    category=cupcakes
+)
+
+item5 = BakeryItem.objects.create(
+    name="Gluten-Free Carrot Cake",
+    description="A moist gluten-free carrot cake with cream cheese frosting.",
+    price=18.25,
+    image="path/to/gluten_free_carrot_cake.jpg",
+    available=True,
+    category=gluten_free_cakes
+)
+
+item6 = BakeryItem.objects.create(
+    name="Vegan Chocolate Cake",
+    description="A rich and moist vegan chocolate cake with vegan frosting.",
+    price=19.99,
+    image="path/to/vegan_chocolate_cake.jpg",
+    available=True,
+    category=vegan_cakes
+)
+
+# Create regular users (customers)
+user1 = User.objects.create_user(username="lucy_olson", password="password123", first_name="Lucy", last_name="Olson")
+user2 = User.objects.create_user(username="mark_smith", password="password456", first_name="Mark", last_name="Smith")
+user3 = User.objects.create_user(username="emma_johnson", password="password789", first_name="Emma", last_name="Johnson")
+
+# Create staff (users with staff privileges)
+staff_user1 = User.objects.create_user(username="john_doe", password="staff123", first_name="John", last_name="Doe")
+staff_user1.is_staff = True  # Set this user as staff
+staff_user1.save()
+
+staff_user2 = User.objects.create_user(username="jane_smith", password="staff456", first_name="Jane", last_name="Smith")
+staff_user2.is_staff = True  # Set this user as staff
+staff_user2.save()
+
+# Create user profiles
+profile1 = UserProfile.objects.create(user=user1, address="123 Maple St.", phone_number="5551234567")
+profile2 = UserProfile.objects.create(user=user2, address="456 Oak Ave.", phone_number="5559876543")
+profile3 = UserProfile.objects.create(user=user3, address="789 Pine Rd.", phone_number="5556543210")
+
+# Create staff profiles (optional, if you want to store additional information for staff)
+staff_profile1 = UserProfile.objects.create(user=staff_user1, address="101 Main St.", phone_number="5550001234")
+staff_profile2 = UserProfile.objects.create(user=staff_user2, address="202 Elm St.", phone_number="5550005678")
+
+# Create orders for each user
+order1 = Order.objects.create(
+    user=user1,
+    product=item1,
+    quantity=2,
+    total_price=item1.price * 2,
+    status="Pending"
+)
+
+order2 = Order.objects.create(
+    user=user2,
+    product=item2,
+    quantity=1,
+    total_price=item2.price,
+    status="Completed"
+)
+
+order3 = Order.objects.create(
+    user=user3,
+    product=item3,
+    quantity=3,
+    total_price=item3.price * 3,
+    status="Pending"
+)
+
+# Staff can also place orders
+order4 = Order.objects.create(
+    user=staff_user1,
+    product=item4,
+    quantity=5,
+    total_price=item4.price * 5,
+    status="Completed"
+)
+
+order5 = Order.objects.create(
+    user=staff_user2,
+    product=item5,
+    quantity=2,
+    total_price=item5.price * 2,
+    status="Pending"
+)

@@ -1,0 +1,15 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+
+<form method="post" class="account">
+    <h2> Login </h2>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn2">Login</button>
+    <p>Don't have an account: <a href="{% url 'register' %}" class="account_link">Register here</a></p>
+</form>
+
+
+
+{% include "bakery/footer.html" %}

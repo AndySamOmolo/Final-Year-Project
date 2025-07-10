@@ -1,0 +1,42 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+<div class="shopping-cart">
+    <h1>Your Shopping Cart</h1>
+
+    <div class="cart-product-list">
+
+   
+
+    {% for item in cart_items %}
+    <div class="cart-product-item">
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100">
+        <p><strong>{{ item.product.name }}</strong> ({{ item.quantity }})</p>
+        <p>Price per kg: Kshs. {{ item.product.price }}</p>
+        <p>Total: Kshs. {{ item.get_total_price }}</p>
+        <form action="{% url 'cart:update_quantity' item.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+            <button type="submit">Update</button>
+        </form>
+        <a href="{% url 'cart:remove_from_cart' item.id %}">Remove</a>
+    </div>
+    
+    {% empty %}
+    <p>Your cart is empty.</p>
+    {% endfor %}
+
+    </div>
+
+    <div class="cart-checkout">
+        <p class="total-price" name="amount">Total Price: Kshs. {{ total_price }}</p>
+        <form action="{% url 'checkout:get_details' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn1">Checkout with M-Pesa</button>
+        </form>
+    </div>
+
+    <a href="{% url 'products' %}" class="continue-shopping">Continue Shopping</a>
+
+</div>
+{% include "bakery/footer.html" %}

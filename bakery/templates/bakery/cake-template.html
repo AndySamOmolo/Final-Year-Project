@@ -1,0 +1,166 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+<div class="product-container">
+  <div class="product-image">
+    <img src="{{ item.image.url }}" alt="{{ item.name }}">
+  </div>
+  <div class="product-details">
+    <h2>{{ item.name }}</h2>
+    <strong>Price:</strong> <span id="base-price">{{ item.price }}</span> {{ item.currency }}
+    <p class="description2">{{ item.description }}</p>
+    <form method="post" action="{% url 'cart:add_to_cart' item.id %}">
+      {% csrf_token %}
+      <ul class="product-info">
+        <!-- SIZE -->
+        <li>
+          <label for="size">Size:</label>
+          <select id="size" name="size">
+            {% for size in sizes %}
+              <option value="{{ size.name }}" data-price-adjust="{{ size.price_adjustment }}" data-serves="{{ size.serves }}">
+                {{ size.name }} (Serves {{ size.serves }})
+              </option>
+            {% endfor %}
+          </select>
+        </li>
+
+        <!-- TOPPINGS -->
+        <li>
+          <label for="toppings">Toppings:</label>
+          <select id="toppings" name="toppings">
+            <option value="None" data-price-adjust="0" selected>None</option>
+            {% for topping in toppings %}
+              <option value="{{ topping.name }}" data-price-adjust="{{ topping.price_adjustment }}">
+                {{ topping.name }} (+{{ item.currency }} {{ topping.price_adjustment }})
+              </option>
+            {% endfor %}
+          </select>
+        </li>
+
+        <li>
+          <label for="message">Custom Message:</label>
+          <textarea id="message" name="message" rows="3" cols="30"></textarea>
+        </li>
+        <li><strong>Ingredients:</strong> {{ item.ingredients }}</li>
+      </ul>
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity" min="1" max="10" value="1">
+      <br>
+      <h2>Total Price:</h2><span id="total-price"> {{ item.get_price_with_currency }}</span>
+      <div class="btnopt">
+        <button type="submit" class="btn1">Add to Cart</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
+  background-color: #f5f5f5;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  margin-top: 50px;
+}
+
+.product-image img {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.product-details {
+  flex: 1;
+  margin-left: 2rem;
+}
+
+.product-details h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.product-details .description2 {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.product-info {
+  list-style: none;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+}
+
+.product-info li {
+  margin-bottom: 0.5rem;
+}
+
+.product-info li strong {
+  margin-right: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+label {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+
+input[type="number"] {
+  width: 50px;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-right: 1rem;
+}
+
+.btnopt {
+  margin-top: 1rem;
+}
+
+select {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+
+textarea {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sizeSelect = document.getElementById('size');
+    const toppingsSelect = document.getElementById('toppings');
+    const quantityInput = document.getElementById('quantity');
+    const basePriceElement = document.getElementById('base-price');
+    const totalPriceElement = document.getElementById('total-price');
+    const currency = "{{ item.currency }}";
+
+    function updateTotalPrice() {
+      const basePrice = parseFloat(basePriceElement.textContent);
+      const sizeAdjustment = parseFloat(sizeSelect.options[sizeSelect.selectedIndex].dataset.priceAdjust) || 0;
+      const toppingsAdjustment = parseFloat(toppingsSelect.options[toppingsSelect.selectedIndex].dataset.priceAdjust) || 0;
+      const quantity = parseInt(quantityInput.value) || 1;
+
+      const totalPrice = (basePrice + sizeAdjustment + toppingsAdjustment) * quantity;
+      totalPriceElement.textContent = totalPrice.toFixed(2) + " " + currency;
+    }
+
+    updateTotalPrice();
+
+ 
+    sizeSelect.addEventListener('change', updateTotalPrice);
+    toppingsSelect.addEventListener('change', updateTotalPrice);
+    quantityInput.addEventListener('input', updateTotalPrice);
+  });
+</script>
+
+{% include "bakery/footer.html" %}

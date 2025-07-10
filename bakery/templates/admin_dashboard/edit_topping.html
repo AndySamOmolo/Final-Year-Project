@@ -1,0 +1,13 @@
+{% extends 'admin_dashboard/template.html' %}
+
+{% block dashboard_content %}
+<h2>Edit Topping: {{ topping.name }}</h2>
+<form method="POST" class="generic-form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Topping Name:</label>
+        <input type="text" name="name" value="{{ topping.name }}" class="form-control" required>
+    </div>
+    <button type="submit" class="btn1">Update Topping</button>
+</form>
+{% endblock %}

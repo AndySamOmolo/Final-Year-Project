@@ -1,0 +1,38 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+<style></style>
+
+<div class="user_dashboard_details">
+    <h1>Welcome, {{ user.username }}</h1>
+    <p>This is your staff dashboard. Manage bakery items, orders, and reports here.</p>
+</div>
+
+<div class="dashboard_div">
+<aside class="user_aside">
+    <nav>
+        <h2>Staff Tools</h2>
+        <hr class="horizontal">
+        <ul>
+            <li class="nav-item"><a href="{% url 'staff_dashboard:manage_orders' %}" class="nav-link">Manage Orders</a></li>
+            <li class="nav-item"><a href="{% url 'staff_dashboard:update_items' %}" class="nav-link">Update Bakery Items</a></li>
+            <li class="nav-item"><a href="{% url 'staff_dashboard:send_newsletter' %}" class="nav-link">Send Newsletter</a></li>
+
+            <li class="nav-item">
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link">Logout</button>
+                </form>
+            </li>
+           
+        </ul>
+    </nav>
+</aside>
+
+<div class="dashboard_section">
+    {% block dashboard_content %}
+    {% endblock %}
+</div>
+</div>
+
+{% include "bakery/footer.html" %}

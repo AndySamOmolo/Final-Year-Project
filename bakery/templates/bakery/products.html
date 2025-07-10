@@ -1,0 +1,64 @@
+{% load static %}
+{% include "bakery/header.html" %}
+
+<div class="products-container">
+
+  <aside class="products_aside">
+    <nav>
+      <h2>Menu</h2>
+      <ul>
+        <li>
+          <a href="{% url 'products' %}">All Items</a>
+        </li>
+        {% for category in categories %}
+        <li>
+          <a href="?category={{ category.slug }}">{{ category.name }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </aside>
+  
+
+  <div class="items-container2">
+    {% for item in page_obj %}
+    <div class="item">
+      <div class="image-container">
+        <img src="{{ item.image.url }}" alt="Image 1">
+      </div>
+      <div class="description">
+        <p>{{ item.name }}</p>
+        <p>{{ item.get_price_with_currency }}</p>
+      </div>
+      <div class="btnopt">
+        <a href="{% url 'cake_template' slug=item.slug %}" class="btn1">Select Options</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<div class="pagination-container">
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page=1{% if category_slug %}&category={{ category_slug }}{% endif %}">First</a>
+      <a href="?page={{ page_obj.previous_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}">&laquo; Previous</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <span class="current-page">{{ num }}</span>
+      {% else %}
+        <a href="?page={{ num }}{% if category_slug %}&category={{ category_slug }}{% endif %}">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}">Next &raquo;</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}{% if category_slug %}&category={{ category_slug }}{% endif %}">Last</a>
+    {% endif %}
+  </div>
+</div>
+
+{% include "bakery/footer.html" %}

@@ -1,0 +1,38 @@
+{% extends 'user_dashboard/template.html' %}
+
+{% block dashboard_content %}
+<h2>Your Previous Orders</h2>
+
+{% if orders %}
+    <table class="generic-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Products</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Ordered On</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>
+                        <ul>
+                            {% for item in order.order_items.all %}
+                                <li>{{ item.product.name }} (x{{ item.quantity }})</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ order.total_price }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.created_at|date:"d M Y, H:i" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You have no orders yet.</p>
+{% endif %}
+{% endblock %}
