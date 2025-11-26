@@ -2,32 +2,32 @@
 
 {% block dashboard_content %}
 <h2>Add New User</h2>
-<form method="POST" class="bakery-item-form">
+<form method="POST" class="generic-form">
     {% csrf_token %}
-    <p>
+    <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-    </p>
+        <input type="text" id="username" name="username" required class="form-control">
+    </div>
 
-    <p>
+    <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email"  required>
-    </p>
+        <input type="email" id="email" name="email" required class="form-control">
+    </div>
 
-    <p>
+    <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"  required>
-    </p>
+        <input type="password" id="password" name="password" required class="form-control">
+    </div>
 
-    <p>
+    <div class="form-group">
         <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password"  required>
-    </p>
+        <input type="password" id="confirm_password" name="confirm_password" required class="form-control">
+    </div>
 
-    <p>
+    <div class="form-group">
         <label for="is_staff">Staff Member:</label>
         <input type="checkbox" id="is_staff" name="is_staff">
-    </p>
+    </div>
 
     <button type="submit" class="btn2">Add User</button>
 </form>

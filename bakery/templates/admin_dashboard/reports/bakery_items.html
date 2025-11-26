@@ -1,54 +1,97 @@
 <style>
-    
+    @page {
+        size: A4 landscape;
+        margin: 1cm;
+    }
+    body {
+        font-family: 'Helvetica', sans-serif;
+        color: #333;
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid purple;
+        padding-bottom: 10px;
+    }
+    .header h1 {
+        color: purple;
+        margin: 0;
+        font-size: 24px;
+    }
+    .header p {
+        margin: 5px 0 0;
+        color: #666;
+        font-size: 14px;
+    }
+    .summary-cards {
+        margin-bottom: 30px;
+    }
+    .summary-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    .summary-card strong {
+        color: purple;
+    }
     .generic-table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        border: 1px solid #ddd;
+        font-size: 10px;
     }
-    
-    .generic-table th,
-    .generic-table td {
+    .generic-table th, .generic-table td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 4px;
         text-align: left;
+        vertical-align: top;
     }
-    
     .generic-table th {
-        background-color: #f4f4f4;
+        background-color: purple;
+        color: white;
         font-weight: bold;
+        white-space: nowrap;
     }
-    
     .generic-table tr:nth-child(even) {
         background-color: #f9f9f9;
     }
-    
-    .generic-table tr:hover {
-        background-color: #f1f1f1;
-    }
-    
 </style>
 
-<h2>Bakery Items Sales Report</h2>
+<div class="header">
+    <h1>Amasden Bakery</h1>
+    <p>Bakery Items Sales Report</p>
+    <p>Generated on: {% now "F j, Y, g:i a" %}</p>
+</div>
+
+<div class="summary-cards">
+    <div class="summary-card"><strong>Total Items:</strong> {{ total_items }}</div>
+    <div class="summary-card"><strong>Total Revenue:</strong> Kshs {{ total_revenue_all }}</div>
+    <div class="summary-card"><strong>Top Selling Item:</strong> {% if top_selling_item %}{{ top_selling_item.name }}{% else %}N/A{% endif %}</div>
+</div>
+
+{% if chart %}
+<div class="chart-container" style="text-align: center; margin-bottom: 30px;">
+    <img src="data:image/png;base64,{{ chart }}" alt="Sales Chart" style="max-width: 100%; height: auto;">
+</div>
+{% endif %}
+
+<h3>Sales Details</h3>
 <table class="generic-table">
     <thead>
         <tr>
             <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Available</th>
             <th>Category</th>
-            <th>Total Quantity Sold</th>
-            <th>Total Revenue</th>
+            <th>Price</th>
+            <th>Sold</th>
+            <th>Revenue</th>
         </tr>
     </thead>
     <tbody>
         {% for data in sales_data %}
         <tr>
             <td>{{ data.item.name }}</td>
-            <td>{{ data.item.description }}</td>
-            <td>{{ data.item.get_price_with_currency }}</td>
-            <td>{{ data.item.available }}</td>
             <td>
                 {% if data.item.category %}
                     {{ data.item.category.name }}
@@ -56,14 +99,14 @@
                     None
                 {% endif %}
             </td>
+            <td>{{ data.item.get_price_with_currency }}</td>
             <td>{{ data.total_quantity_sold }}</td>
-            <td>{{ data.total_revenue }}</td>
+            <td>Kshs {{ data.total_revenue }}</td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="7">No bakery items available</td>
+            <td colspan="5">No bakery items available</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-

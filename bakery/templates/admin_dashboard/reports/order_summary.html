@@ -1,59 +1,95 @@
-<style>   
-.generic-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    border: 1px solid #ddd;
-}
-
-.generic-table th,
-.generic-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-}
-
-.generic-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-.generic-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.generic-table tr:hover {
-    background-color: #f1f1f1;
-}
-
+<style>
+    @page {
+        size: A4 landscape;
+        margin: 1cm;
+    }
+    body {
+        font-family: 'Helvetica', sans-serif;
+        color: #333;
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid purple;
+        padding-bottom: 10px;
+    }
+    .header h1 {
+        color: purple;
+        margin: 0;
+        font-size: 24px;
+    }
+    .header p {
+        margin: 5px 0 0;
+        color: #666;
+        font-size: 14px;
+    }
+    .summary-cards {
+        margin-bottom: 30px;
+    }
+    .summary-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    .summary-card strong {
+        color: purple;
+    }
+    .generic-table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 8px;
+    }
+    .generic-table th, .generic-table td {
+        border: 1px solid #ddd;
+        padding: 2px;
+        text-align: left;
+        vertical-align: top;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .generic-table th {
+        background-color: purple;
+        color: white;
+        font-weight: bold;
+    }
+    .generic-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 </style>
 
-<h2>Order Summary Report</h2>
+<div class="header">
+    <h1>Amasden Bakery</h1>
+    <p>Order Summary Report</p>
+    <p>Generated on: {% now "F j, Y, g:i a" %}</p>
+</div>
 
-<p>Total Orders: {{ total_orders }}</p>
-<p>Pending Orders: {{ pending_orders }}</p>
-<p>Completed Orders: {{ completed_orders }}</p>
+<div class="summary-cards">
+    <div class="summary-card"><strong>Total Orders:</strong> {{ total_orders }}</div>
+    <div class="summary-card"><strong>Pending Orders:</strong> {{ pending_orders }}</div>
+    <div class="summary-card"><strong>Completed Orders:</strong> {{ completed_orders }}</div>
+</div>
 
-<!-- Table to List Orders -->
 <h3>Order Details</h3>
 <table class="generic-table">
     <thead>
         <tr>
-            <th>Order ID</th>
-            <th>User</th>
-            <th>Status</th>
-            <th>Total Price</th>
-            <th>Created At</th>
+            <th style="width: 20%;">User</th>
+            <th style="width: 20%;">Status</th>
+            <th style="width: 30%;">Total Price</th>
+            <th style="width: 30%;">Date</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
         <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.user.username}}</td>
+            <td>{{ order.username }}</td>
             <td>{{ order.status }}</td>
             <td>{{ order.total_price }}</td>
-            <td>{{ order.created_at }}</td>
+            <td>{{ order.created_at|date:"M d, Y" }}</td>
         </tr>
         {% endfor %}
     </tbody>

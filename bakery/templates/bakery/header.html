@@ -6,6 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amasden Bakery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/master.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
@@ -76,8 +79,12 @@
             <path d="M21 7h-4.26l-2-4.44A2 2 0 0 0 13.88 1H10.12a2 2 0 0 0-1.86 1.56L6.26 7H2v2h2.27l2.83 12.09A2 2 0 0 0 9 23h6a2 2 0 0 0 1.9-1.41L19.73 9H22V7zm-7-4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM7.68 9l1.58-4h3.48l1.58 4H7.68z" />
           </svg>
         </a>
+        <button class="menu-toggle" aria-label="Menu toggle" onclick="toggleVisibility()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#333">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>
+        </button>
       </div>
-      <button class="menu-toggle" aria-label="Menu toggle" onclick="toggleVisibility()"><span>&#9776;</span></button>
     </nav>
 
 {% if messages %}
@@ -107,11 +114,7 @@
     <script>
         function toggleVisibility() {
               var content = document.getElementById('navbarNav');
-              if (content.style.display === 'none') {
-                  content.style.display = 'block';  
-              } else {
-                  content.style.display = 'none';  
-              }
+              content.classList.toggle('show');
         }
     </script>
   </body>

@@ -2,7 +2,7 @@
 
 {% block dashboard_content %}
 <h2>Edit User</h2>
-<form method="POST" class="bakery-item-form">
+<form method="POST" class="generic-form">
     {% csrf_token %}
     <p>
         <label for="username">Username:</label>
@@ -24,6 +24,6 @@
         <input type="text" id="phone_number" name="phone_number" value="{{ user.userprofile.phone_number }}">
     </p>
 
-    <button type="submit" class="btn2">Update</button>
+    <button type="submit" class="btn2">Update User</button>
 </form>
 {% endblock %}

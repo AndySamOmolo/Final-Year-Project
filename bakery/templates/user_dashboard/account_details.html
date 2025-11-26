@@ -3,10 +3,10 @@
 {% block dashboard_content %}
     <h2>Account Details</h2>
 
-    <form method="post" class="user-form">
+    <form method="post" class="generic-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn1">Update Details</button>
+        <button type="submit" class="btn2">Update Details</button>
     </form>
     
 

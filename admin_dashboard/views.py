@@ -20,47 +20,130 @@ from datetime import datetime
 def admin_check(user):
     return user.is_superuser
 
+def truncate_text(text, max_length):
+    """Truncate text to max_length chars, adding ellipsis if truncated"""
+    if not text:
+        return ""
+    text_str = str(text)
+    if len(text_str) <= max_length:
+        return text_str
+    return text_str[:max_length] + "..."
+
 @user_passes_test(admin_check)
 def report_dashboard(request):
     return render(request, 'admin_dashboard/report_dashboard.html')
 
 
 
+from .utils import generate_order_status_chart, generate_user_role_chart, generate_sales_chart, generate_subscription_chart
+
 @user_passes_test(admin_check)
 def generate_pdf_report(request, report_type):
+    template_path = ''
     context = {}
+    chart = None
 
     if report_type == 'registered_users':
-        context['registered_users'] = User.objects.all()
+        users = User.objects.all()
+        
+        # Pre-process users with truncated fields for PDF
+        processed_users = []
+        for user in users:
+            processed_users.append({
+                'username': truncate_text(user.username, 12),
+                'email': truncate_text(user.email, 20),
+                'is_staff': user.is_staff,
+            })
+        
+        context['registered_users'] = processed_users
+        context['total_users'] = users.count()
+        context['staff_users'] = users.filter(is_staff=True).count()
+        context['regular_users'] = users.filter(is_staff=False).count()
+        chart = generate_user_role_chart(users)
 
     elif report_type == 'newsletter_subscriptions':
-        context['newsletter_subscriptions'] = NewsletterSubscription.objects.all()
+        subscriptions = NewsletterSubscription.objects.all()
+        context['newsletter_subscriptions'] = subscriptions
+        context['total_subscribers'] = subscriptions.count()
+        
+        # Calculate new this month
+        current_month = now().month
+        current_year = now().year
+
+        total_subscribers = subscriptions.count()
+        new_this_month = subscriptions.filter(date_subscribed__month=current_month, date_subscribed__year=current_year).count()
+        
+        context = {
+            'newsletter_subscriptions': subscriptions,
+            'total_subscribers': total_subscribers,
+            'new_this_month': new_this_month,
+        }
+        chart = generate_subscription_chart(subscriptions)
 
     elif report_type == 'order_summary':
         orders = Order.objects.all()
-        context['total_orders'] = orders.count()
-        context['pending_orders'] = orders.filter(status='Pending').count()
-        context['completed_orders'] = orders.filter(status='Completed').count()
-        context['orders'] = orders
+        
+        # Pre-process orders with truncated fields for PDF
+        processed_orders = []
+        for order in orders:
+            username = "N/A"
+            if order.user:
+                username = truncate_text(order.user.username, 12)
+            
+            processed_orders.append({
+                'username': username,
+                'status': order.status,
+                'total_price': order.total_price,
+                'created_at': order.created_at,
+            })
+        
+        total_orders = orders.count()
+        pending_orders = orders.filter(status='Pending').count()
+        completed_orders = orders.filter(status='Completed').count()
+        context = {
+            'orders': processed_orders,
+            'total_orders': total_orders,
+            'pending_orders': pending_orders,
+            'completed_orders': completed_orders,
+        }
+        chart = generate_order_status_chart(orders)
 
     elif report_type == 'bakery_items':
+        template_path = 'admin_dashboard/reports/bakery_items.html'
         bakery_items = BakeryItem.objects.all()
 
         sales_data = []
+        total_revenue_all = 0
+        
         for item in bakery_items:
             total_quantity_sold = OrderItem.objects.filter(product=item).aggregate(Sum('quantity'))['quantity__sum'] or 0
             total_revenue = OrderItem.objects.filter(product=item).aggregate(Sum('total_price'))['total_price__sum'] or 0
+            
+            total_revenue_all += total_revenue
+            
             sales_data.append({
                 'item': item,
                 'total_quantity_sold': total_quantity_sold,
                 'total_revenue': total_revenue
             })
         
-        context['sales_data'] = sales_data
+        top_selling_item = None
+        if sales_data:
+            top_selling_item = max(sales_data, key=lambda x: x['total_quantity_sold'])['item']
+
+        context = {
+            'sales_data': sales_data,
+            'total_items': bakery_items.count(),
+            'total_revenue_all': total_revenue_all,
+            'top_selling_item': top_selling_item,
+        }
+        chart = generate_sales_chart(sales_data)
 
     else:
         return HttpResponse('Invalid report type.', content_type='text/plain')
 
+    if chart:
+        context['chart'] = chart
     # Render the HTML template for the report
     html = render_to_string(f'admin_dashboard/reports/{report_type}.html', context)
 
@@ -74,7 +157,7 @@ def generate_pdf_report(request, report_type):
 
     pdf_buffer.seek(0)
     response = HttpResponse(pdf_buffer, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{report_type}_report_{datetime.now().strftime("%Y%m%d")}.pdf"'
+    response['Content-Disposition'] = f'inline; filename="{report_type}_report_{datetime.now().strftime("%Y%m%d")}.pdf"'
     return response
 
 
@@ -107,6 +190,13 @@ def edit_user(request, user_id):
         return redirect('admin_dashboard:manage_users')
 
     return render(request, 'admin_dashboard/edit_user.html', {'user': user})
+
+@user_passes_test(admin_check)
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.delete()
+    messages.success(request, "User deleted successfully!")
+    return redirect('admin_dashboard:manage_users')
 
 @user_passes_test(admin_check)
 def add_user(request):

@@ -17,7 +17,7 @@
             <li class="nav-item"><a href="{% url 'user_dashboard:coupons' %}" class="nav-link">Coupons</a></li>
             <li class="nav-item"><form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="nav-link">Logout</button>
+                <button type="submit" class="logout-btn">Logout</button>
             </form></li>
         </ul>
     </nav>

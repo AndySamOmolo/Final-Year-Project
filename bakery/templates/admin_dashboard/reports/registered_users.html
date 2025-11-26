@@ -1,17 +1,88 @@
 <style>
-    .generic-table {
-        border: 1px solid black;
+    @page {
+        size: A4 landscape;
+        margin: 1cm;
+    }
+    body {
+        font-family: 'Helvetica', sans-serif;
+        color: #333;
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid purple;
+        padding-bottom: 10px;
+    }
+    .header h1 {
+        color: purple;
+        margin: 0;
+        font-size: 24px;
+    }
+    .header p {
+        margin: 5px 0 0;
+        color: #666;
+        font-size: 14px;
+    }
+    .summary-cards {
+        margin-bottom: 30px;
+    }
+    .summary-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
         border-radius: 5px;
+    }
+    .summary-card strong {
+        color: purple;
+    }
+    .generic-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 9px;
+    }
+    .generic-table th, .generic-table td {
+        border: 1px solid #ddd;
+        padding: 3px;
+        text-align: left;
+        vertical-align: top;
+    }
+    .generic-table th {
+        background-color: purple;
+        color: white;
+        font-weight: bold;
+    }
+    .generic-table tr:nth-child(even) {
+        background-color: #f9f9f9;
     }
 </style>
 
-<h2>Registered Users Report</h2>
+<div class="header">
+    <h1>Amasden Bakery</h1>
+    <p>Registered Users Report</p>
+    <p>Generated on: {% now "F j, Y, g:i a" %}</p>
+</div>
+
+<div class="summary-cards">
+    <div class="summary-card"><strong>Total Users:</strong> {{ total_users }}</div>
+    <div class="summary-card"><strong>Staff Users:</strong> {{ staff_users }}</div>
+    <div class="summary-card"><strong>Regular Users:</strong> {{ regular_users }}</div>
+</div>
+
+{% if chart %}
+<div class="chart-container" style="text-align: center; margin-bottom: 30px;">
+    <img src="data:image/png;base64,{{ chart }}" alt="User Role Chart" style="max-width: 100%; height: auto;">
+</div>
+{% endif %}
+
+<h3>User Details</h3>
 <table class="generic-table">
     <thead>
         <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Date Joined</th>
+            <th style="width: 20%; min-width: 150px; max-width: 250px;">Username</th>
+            <th style="width: 60%; min-width: 400px; max-width: 700px;">Email</th>
+            <th style="width: 20%; min-width: 150px; max-width: 250px;">Role</th>
         </tr>
     </thead>
     <tbody>
@@ -19,7 +90,11 @@
         <tr>
             <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.date_joined }}</td>
+            <td>{% if user.is_staff %}Staff{% else %}User{% endif %}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No users found.</td>
         </tr>
         {% endfor %}
     </tbody>

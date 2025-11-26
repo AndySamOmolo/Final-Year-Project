@@ -10,16 +10,22 @@
 
     {% for item in cart_items %}
     <div class="cart-product-item">
-        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100">
-        <p><strong>{{ item.product.name }}</strong> ({{ item.quantity }})</p>
-        <p>Price per kg: Kshs. {{ item.product.price }}</p>
-        <p>Total: Kshs. {{ item.get_total_price }}</p>
-        <form action="{% url 'cart:update_quantity' item.id %}" method="post">
-            {% csrf_token %}
-            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
-            <button type="submit">Update</button>
-        </form>
-        <a href="{% url 'cart:remove_from_cart' item.id %}">Remove</a>
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+        
+        <div class="cart-item-details">
+            <p><strong>{{ item.product.name }}</strong></p>
+            <p>Price: Kshs. {{ item.product.price }}</p>
+            <p>Subtotal: Kshs. {{ item.get_total_price }}</p>
+        </div>
+
+        <div class="cart-actions">
+            <form action="{% url 'cart:update_quantity' item.id %}" method="post">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                <button type="submit" class="btn-update">Update</button>
+            </form>
+            <a href="{% url 'cart:remove_from_cart' item.id %}" class="remove-link">Remove</a>
+        </div>
     </div>
     
     {% empty %}

@@ -1,13 +1,27 @@
 {% extends 'admin_dashboard/template.html' %}
 
 {% block dashboard_content %}
-    <h2>Add a New Bakery Item</h2>
+    <div class="form-container">
+        <h2>Add a New Bakery Item</h2>
 
-    <form method="POST" enctype="multipart/form-data" class="bakery-item-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn2">Add Bakery Item</button>
-    </form>
-
+        <form method="POST" enctype="multipart/form-data" class="generic-form">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                {{ field }}
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <div class="alert alert-error">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn2">Add Bakery Item</button>
+        </form>
+    </div>
     <br>
 {% endblock %}

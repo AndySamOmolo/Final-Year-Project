@@ -1,35 +1,82 @@
 <style>
-    
+    @page {
+        size: A4 landscape;
+        margin: 1cm;
+    }
+    body {
+        font-family: 'Helvetica', sans-serif;
+        color: #333;
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid purple;
+        padding-bottom: 10px;
+    }
+    .header h1 {
+        color: purple;
+        margin: 0;
+        font-size: 24px;
+    }
+    .header p {
+        margin: 5px 0 0;
+        color: #666;
+        font-size: 14px;
+    }
+    .summary-cards {
+        margin-bottom: 30px;
+    }
+    .summary-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    .summary-card strong {
+        color: purple;
+    }
     .generic-table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        border: 1px solid #ddd;
+        font-size: 10px;
     }
-    
-    .generic-table th,
-    .generic-table td {
+    .generic-table th, .generic-table td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 4px;
         text-align: left;
+        vertical-align: top;
     }
-    
     .generic-table th {
-        background-color: #f4f4f4;
+        background-color: purple;
+        color: white;
         font-weight: bold;
+        white-space: nowrap;
     }
-    
     .generic-table tr:nth-child(even) {
         background-color: #f9f9f9;
     }
-    
-    .generic-table tr:hover {
-        background-color: #f1f1f1;
-    }
-    
-    </style>
-    
-<h2>Newsletter Subscriptions Report</h2>
+</style>
+
+<div class="header">
+    <h1>Amasden Bakery</h1>
+    <p>Newsletter Subscriptions Report</p>
+    <p>Generated on: {% now "F j, Y, g:i a" %}</p>
+</div>
+
+<div class="summary-cards">
+    <div class="summary-card"><strong>Total Subscribers:</strong> {{ total_subscribers }}</div>
+    <div class="summary-card"><strong>New This Month:</strong> {{ new_this_month }}</div>
+</div>
+
+{% if chart %}
+<div class="chart-container" style="text-align: center; margin-bottom: 30px;">
+    <img src="data:image/png;base64,{{ chart }}" alt="Subscription Chart" style="max-width: 100%; height: auto;">
+</div>
+{% endif %}
+
+<h3>Subscription Details</h3>
 <table class="generic-table">
     <thead>
         <tr>
@@ -41,7 +88,11 @@
         {% for subscription in newsletter_subscriptions %}
         <tr>
             <td>{{ subscription.email }}</td>
-            <td>{{ subscription.date_subscribed }}</td>
+            <td>{{ subscription.date_subscribed|date:"M d, Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No subscriptions found.</td>
         </tr>
         {% endfor %}
     </tbody>

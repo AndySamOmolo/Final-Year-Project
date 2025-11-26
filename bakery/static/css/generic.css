@@ -2,12 +2,13 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 20px;
+    padding: 20px 50px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-    max-width: 600px;
+    max-width: 800px;
     margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -21,6 +22,7 @@
 .generic-form input[type="text"],
 .generic-form input[type="email"],
 .generic-form input[type="password"],
+.generic-form input[type="number"],
 .generic-form input[type="datetime-local"],
 .generic-form select {
     padding: 12px;
@@ -34,12 +36,31 @@
 .generic-form input[type="text"]:focus,
 .generic-form input[type="email"]:focus,
 .generic-form input[type="password"]:focus,
+.generic-form input[type="number"]:focus,
 .generic-form input[type="datetime-local"]:focus,
 .generic-form select:focus {
     border-color: purple;
     outline: none;
 }
 
+.generic-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.generic-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.generic-form .form-group input,
+.generic-form .form-group textarea,
+.generic-form .form-group select {
+    width: 100%;
+}
 
 
 .generic-table .btn1 {
@@ -91,5 +112,39 @@
     color: red;
 }
 
+/* Mobile Responsive - Generic Forms and Tables */
+@media (max-width: 768px) {
+    .generic-form {
+        padding: 20px 25px;
+        width: 95%;
+    }
 
+    .generic-table {
+        font-size: 0.9rem;
+    }
 
+    .generic-table th,
+    .generic-table td {
+        padding: 8px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .generic-form {
+        padding: 15px 20px;
+    }
+
+    /* Make tables scrollable horizontally on very small screens */
+    .generic-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+
+    .generic-table th,
+    .generic-table td {
+        padding: 6px 4px;
+        font-size: 0.85rem;
+    }
+}

@@ -4,10 +4,15 @@
 <h2>Edit Topping: {{ topping.name }}</h2>
 <form method="POST" class="generic-form">
     {% csrf_token %}
+    {% for field in form %}
     <div class="form-group">
-        <label for="name">Topping Name:</label>
-        <input type="text" name="name" value="{{ topping.name }}" class="form-control" required>
+        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+        {{ field }}
+        {% for error in field.errors %}
+        <div class="alert alert-error">{{ error }}</div>
+        {% endfor %}
     </div>
-    <button type="submit" class="btn1">Update Topping</button>
+    {% endfor %}
+    <button type="submit" class="btn2">Update Topping</button>
 </form>
 {% endblock %}

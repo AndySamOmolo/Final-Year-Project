@@ -18,7 +18,7 @@
             <li class="nav-item"><a href="{% url 'user_dashboard:orders' %}" class="nav-link">Orders</a></li>
             <li class="nav-item"><form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="nav-link">Logout</button>
+                <button type="submit" class="logout-btn">Logout</button>
             </form></li>
         </ul>
     </nav>
