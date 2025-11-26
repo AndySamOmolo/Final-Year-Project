@@ -41,6 +41,7 @@ def generate_pdf_report(request, report_type):
         context['total_orders'] = orders.count()
         context['pending_orders'] = orders.filter(status='Pending').count()
         context['completed_orders'] = orders.filter(status='Completed').count()
+        context['orders'] = orders
 
     elif report_type == 'bakery_items':
         bakery_items = BakeryItem.objects.all()
